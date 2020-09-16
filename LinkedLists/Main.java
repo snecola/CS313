@@ -4,10 +4,12 @@ class Main {
     public static void main (String[] args){
       LL l = new LL();
       l.addFirst(1);
-      l.addLast(2);
-      l.addLast(3);
-      l.addAfter(5,5);
-      l.addAfter(6,2);
+//      l.addLast(2);
+//      l.addLast(3);
+//      int i = l.get(3);
+//      System.out.println(i);
+//      l.removeHead();
+      System.out.println(l.get(0));
     }
 }
 
@@ -16,114 +18,138 @@ class LL {
     private Node tail;
     private int size;
 
-
-    //Default Constructor
     LL(){
-        head=tail=null;
-        size=0;
+        head = tail = null;
+        size = 0;
     }
 
     /*
-    Method to add a node to the front of the linked list
+    Method to insert into the back of linklist
+    Param data: the integer that is being inserted
     */
-    public void addFirst (int data){
-      Node newNode = new Node(data);
-      newNode.setNext(head);
-      head=newNode;
-      if (size==0){
-        tail=newNode;
-      }
-      size++;
-    }
-
-    /*
-    Method to add a node to the back of the linked List
-    */
-    public void addLast (int data){
-      Node newNode = new Node(data);
-      if (size==0) {
-        head=tail=newNode;
+    public void addLast(int data){
+        Node newNode = new Node(data);
+        if(size == 0){
+            head = tail = newNode;
+            size++;
+            return;
+        }
+        tail.setNext(newNode);
+        tail = newNode;
         size++;
-        return;
-      }
-      tail.setNext(newNode);
-      tail=newNode;
-      size++;
     }
 
     /*
-    Mathod to insert a node into the linked list after a node containing
-    the designated data.
-    param data: the integer that is being inserted
-    param after: the integer we want to place the data after
+    Method to insert into the front of linklist
+    Param data: the integer that is being inserted
     */
-    public void addAfter (int data, int after){
-      Node afterNode = findNode(after);
-
-      if (afterNode==null){
-        System.out.println("After node does not exist, adding node to rear");
-        addLast(data);
-        return;
-      }
-
-      Node newNode = new Node (data);
-      newNode.setNext(afterNode.getNext());
-      afterNode.setNext(newNode);
-      size++;
+    public void addFirst(int data){
+        Node newNode = new Node(data);
+        newNode.setNext(head);
+        head = newNode;
+        if(size == 0) {
+            tail = newNode;
+        }
+        size++;
     }
 
     /*
-    Mathod to insert a node into the linked list before a node containing
-    the designated data.
-    param data: the integer that is being inserted
-    param before: the integer we want to place the data before
+    Method to insert data after a given target
+    If target does not exist, default to insertion of data at rear
+    Param data: the integer that is being inserted
+    param before: the integer we want to insert the new data after
     */
-//    public void addBefore (int data, int before){
-//
-//    }
+    public void addAfter(int data, int after){
+       Node afterNode = findNode(after);
 
-    //Helper Function: Finds a target node
-    private Node findNode (int target) {
-      Node targetNode = head;
+        if(afterNode == null) {
+            System.out.println("After node does not exist, defaulting insertion at rear");
+            addLast(data);
+            return;
+        }
 
-      while (targetNode!=null && targetNode.getData()!=after){
-          targetNode = targetNode.getNext();
-      }
+        Node newNode = new Node(data);
+        newNode.setNext(afterNode.getNext());
+        afterNode.setNext(newNode);
+        size++;
     }
 
-    public boolean contains (int target) {
-      /*
-      Node targetNode = findNode(target);
-      if (targetNode==null) return false;
-      else return true;
-      */
-      return findNode(target) != null;
+    /*
+    Method to find a node that contains the "target" value
+    If such node exists, a reference to that node is returned
+    Otherwise a null reference is returned
+    Param target: the integer we want to find in the list
+     */
+    private Node findNode( int target ){
+        Node targetNode = head;
+
+        while(targetNode != null && targetNode.getData()!=target){
+            targetNode = targetNode.getNext();
+        }
+
+        return targetNode;
+    }
+
+    /*
+    Method to insert data before a given target
+    If target does not exist, default to insertion of data at rear
+    Param data: the integer that is being inserted
+    param before: the integer we want to insert the new data before
+    */
+    public void addBefore(int data, int before){
+
+    }
+
+    /*
+    Method that checks to see if a given target value is in the list
+    Returns true is it exist
+    Returns false otherwise
+    Param target: the integer we want to find in the list
+     */
+    public boolean contains(int target){
+        /*
+        Node targetNode = findNode(target);
+        if(targetNode == null) return false;
+        else return true;
+        */
+        return findNode(target) != null;
     }
 
     /*
     Method that returns the node from the given index
     Return the int stored at the index provided
     If index is not in the list throw a IndexOutOfBounds Exception
-    param index: the position the user wants the data for
+    Param index: the position the user wants the data for
     */
-    public int get (int index) throws Exception {
-      if (index>size) throw new IndexOutOfBounds ("Index Out Of Bounds");
+    public int get(int index) throws IndexOutOfBoundsException {
+        Node targetNode = head;
+        int counter=0;
+
+        if (index>=size) throw new IndexOutOfBoundsException("Method get: Index Out of Bounds Exception");
+
+        while (counter<index){
+            targetNode=targetNode.getNext();
+            counter++;
+        }
+
+        return targetNode.getData();
     }
 
     /*
-    This method removes head node from the
+    Method removes the head node from the list
     */
-    public void removeHead (){
-      if (size==0) {
-
-      }
-      if (size==1) {
-
-      }
-      head=head.getNext();
-      size--;
+    public void removeHead(){
+        //consider an empty list
+        if (size==0){
+            System.out.println("Method removeHead: There is no head to remove");
+        }
+        //consider a list of size 1
+        if (size==1){
+            tail=null;
+        }
+        head=head.getNext();
+        size--;
     }
-
 
 }
 
@@ -131,34 +157,25 @@ class Node {
     private int data;
     private Node next;
 
-    Node (int d, Node n){
-      data=d;
-      next=n;
+    Node(int data){
+        this.data = data;
+        next = null;
     }
 
-    Node (int d) {
-      data=d;
-      next=null;
+    Node(int data, Node next){
+        this.data = data;
+        this.next = next;
     }
 
-    public void setNext (Node n){
-      next = n;
+    public int getData(){
+        return data;
     }
 
-    public void setData (int d){
-      data=d;
+    public Node getNext(){
+        return next;
     }
 
-    public Node getNext (){
-      return next;
+    public void setNext(Node next) {
+        this.next = next;
     }
-    public int getData (){
-      return data;
-    }
-}
-
-class IndexOutOfBounds extends Exception {
-  public IndexOutOfBounds (String message){
-    super (message);
-  }
 }

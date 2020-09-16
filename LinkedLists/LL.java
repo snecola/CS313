@@ -52,7 +52,7 @@ class LL {
             addLast(data);
             return;
         }
-        
+
         Node newNode = new Node(data);
         newNode.setNext(afterNode.getNext());
         afterNode.setNext(newNode);
@@ -102,12 +102,22 @@ class LL {
 
     /*
     Method that returns the node from the given index
-    Return the int stored at the index provided 
+    Return the int stored at the index provided
     If index is not in the list throw a IndexOutOfBounds Exception
-    Param index: the position the user wants the data for 
+    Param index: the position the user wants the data for
     */
     public int get(int index) throws Exception{
+        Node targetNode = head;
+        int counter=0;
 
+        if (index>=size) throw new IndexOutOfBoundsException("Method get: Index Out of Bounds Exception");
+
+        while (counter<index){
+            targetNode=targetNode.getNext();
+            counter++;
+        }
+
+        return targetNode.getData();
     }
 
     /*
@@ -135,7 +145,7 @@ class Node {
         this.data = data;
         this.next = next;
     }
-    
+
     public int getData(){
         return data;
     }
@@ -146,5 +156,11 @@ class Node {
 
     public void setNext(Node next) {
         this.next = next;
+    }
+}
+
+class IndexOutOfBounds extends Exception {
+    public IndexOutOfBounds (String message) {
+        super(message);
     }
 }
