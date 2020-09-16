@@ -125,7 +125,7 @@ class LL {
         Node targetNode = head;
         int counter=0;
 
-        if (index>=size) throw new IndexOutOfBoundsException("Method get: Index Out of Bounds Exception");
+        if (index>=size || index<0) throw new IndexOutOfBoundsException("Method get: Index Out of Bounds Exception");
 
         while (counter<index){
             targetNode=targetNode.getNext();
