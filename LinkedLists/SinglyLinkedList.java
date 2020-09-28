@@ -82,7 +82,23 @@ class SinglyLinkedList implements LinkedListInterface {
     param before: the integer we want to insert the new data before
     */
     public void addBefore(int data, int before){
+        Node beforeNode = findNode(before);
+        if (beforeNode==null) {
+            System.out.println("Before node not found: defaulting add last");
+            addLast(data);
+            return;
+        }
 
+        Node newNode = new Node (data);
+        Node afterNode = header;
+
+        while (afterNode.getNext()!=beforeNode){
+            afterNode = afterNode.getNext();
+        }
+        afterNode.setNext(newNode);
+        newNode.setNext(beforeNode);
+        size++;
+        return;
     }
 
     /*

@@ -96,6 +96,24 @@ class DoublyLinkedList implements LinkedListInterface {
     public void removeHead(){
         DNode oldHead = header.getNext();
         header.setNext(oldHead.getNext());
-        oldhead.getNext().setPrev(header);
+        oldHead.getNext().setPrev(header);
+        oldHead.setNext(null);
+        oldHead.setPrev(null);
+    }
+
+    public void removeTail(){
+        DNode oldTail = trailer.getPrev();
+        oldTail.getPrev().setNext(trailer);
+        trailer.setPrev(oldTail.getPrev());
+        oldTail.setNext(null);
+        oldTail.setPrev(null);
+    }
+
+    public void removeData(int d){
+        DNode targetNode = findNode(d);
+        targetNode.getPrev().setNext(targetNode.getNext());
+        targetNode.getNext().setPrev(targetNode.getPrev());
+        targetNode.setNext(null);
+        targetNode.setPrev(null);
     }
 }

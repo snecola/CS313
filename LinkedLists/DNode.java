@@ -37,6 +37,9 @@ class DNode {
 
     public void setPrev(DNode prev) {
         this.prev=prev;
-
     }
+    public void setData(int d){
+        this.data=d;
+    }
+
 }
